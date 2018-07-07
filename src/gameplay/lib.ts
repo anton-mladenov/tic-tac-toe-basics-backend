@@ -2,7 +2,6 @@ export const colors = ["red", "blue", "green", "yellow", "magenta"]
 
 export const randomColor = () => {
 	const random = Math.floor(Math.random() * colors.length)
-	console.log(random)
 	return colors[random]
 }
 

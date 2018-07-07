@@ -37,7 +37,7 @@ export default class GameplayController {
 	) {	
 		const game = await Game.findOne(id)
 		
-		if (!game) throw new NotFoundError("There's no game with ID, man! #CYBYWY")
+		if (!game) throw new NotFoundError("There's no game with the given ID, man! #CYBYWY")
 		if (!name && !color && !board) throw new NotFoundError("Nothing to update here, bro!")
 		
 		const oldGameBoard = game.board
