@@ -18,7 +18,6 @@ export default class Game extends BaseEntity {
 
 	@IsJSON()
 	@Column("simple-json", { nullable: true })
-    board?: {  }
-
+	board?: {}
 }
 

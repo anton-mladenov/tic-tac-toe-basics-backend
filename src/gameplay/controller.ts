@@ -1,7 +1,7 @@
 import { JsonController, Get, Post, HttpCode, BodyParam, Patch, Param, NotFoundError, ForbiddenError } from 'routing-controllers'
 import Game from './entity'
-import {Validator} from "class-validator";
-import {colors, randomColor, defaultBoard, moves} from "./lib"
+import { Validator } from "class-validator";
+import { colors, randomColor, defaultBoard, moves } from "./lib"
 
 const validator = new Validator();
 
@@ -23,7 +23,7 @@ export default class GameplayController {
 		newGame.name = name
 		newGame.color = randomColor()
 		newGame.board = defaultBoard
-		
+
 		return newGame.save()
 	}
 
@@ -34,21 +34,22 @@ export default class GameplayController {
 		@BodyParam("name") name: string,
 		@BodyParam("color") color: string,
 		@BodyParam("board") board: string
-	) {	
+	) {
 		const game = await Game.findOne(id)
-		
+
 		if (!game) throw new NotFoundError("There's no game with the given ID, man! #CYBYWY")
 		if (!name && !color && !board) throw new NotFoundError("Nothing to update here, bro!")
-		
+
 		const oldGameBoard = game.board
 		const newGameBoard = board
 
 		if (name) {
 			game.name = name
 		}
-		
+
+		// updating the board state
 		if (newGameBoard) {
-			if ( moves(oldGameBoard, newGameBoard) === 1 ) {
+			if (moves(oldGameBoard, newGameBoard) === 1) {
 				game.board = newGameBoard
 			} else {
 				throw new ForbiddenError("Can't make more than one move per turn, yo!")
@@ -56,8 +57,9 @@ export default class GameplayController {
 		}
 
 		if (color) {
-			if ( validator.isIn(color, colors) ) { 
-				game.color = color 
+			// validation whether the color given is part of the pre-defined colors
+			if (validator.isIn(color, colors)) {
+				game.color = color
 			} else {
 				throw new ForbiddenError("Wrong color, bruh! What's available is red, blue, green, yellow and magenta")
 			}
